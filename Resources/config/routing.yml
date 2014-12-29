@@ -1,0 +1,28 @@
+
+user_homepage:
+    path:     /user/all
+    defaults: { _controller: UserBundle:User:index }
+
+user_add:
+    path: /user/add
+    defaults: { _controller: UserBundle:User:userAdd }
+    methods: [POST]
+
+user_delete:
+    path: /user/delete/{id}
+    defaults: { _controller: UserBundle:User:userDelete }
+    methods: [DELETE]
+    requirements:
+        id: \d+
+
+user_get:
+    path: /user/{id}
+    defaults: { _controller: UserBundle:User:userGet }
+    methods: [GET]
+    requirements:
+        id: \d+
+
+user_update:
+    path: /user/update
+    defaults: { _controller: UserBundle:User:userUpdate }
+    methods: [POST, PATCH]
