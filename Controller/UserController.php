@@ -24,13 +24,15 @@ class UserController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
 
         //find all users
-        $users = $entityManager->getRepository("UserBundle:User")->findAll();
+        $usersObject = $entityManager->getRepository("UserBundle:User")->findAll();
 
+        $normalizer = new GetSetMethodNormalizer();
+        $normalizer->setIgnoredAttributes(array("password", "salt"));
 
-
-
-
-        var_dump($users, $j);
+        $users = array();
+        foreach($usersObject as $user) {
+            $users[] = $normalizer->normalize($user);
+        }
 
         $response = new JsonResponse();
         $response->setData($users);

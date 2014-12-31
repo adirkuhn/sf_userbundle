@@ -17,8 +17,10 @@ class UserControllerTest extends WebTestCase
 
     protected function setUp()
     {
+
         $this->client = static::createClient(array('test', true));
         $this->entityManager = $this->client->getContainer()->get('doctrine')->getManager();
+
 
         $this->schemaTool = new SchemaTool($this->entityManager);
 
@@ -26,7 +28,9 @@ class UserControllerTest extends WebTestCase
     }
 
     protected function tearDown() {
-        $this->schemaTool->dropDatabase();
+        if ($this->schemaTool) {
+            $this->schemaTool->dropDatabase();
+        }
     }
 
     //testa adicionar novo usuario atraves de post
@@ -165,6 +169,7 @@ class UserControllerTest extends WebTestCase
             $response = $this->client->getResponse();
             $user = json_decode($response->getContent(), true);
             $user['id'] = $user['id'];
+            unset($user['password']);
 
             $this->assertEquals(JsonResponse::HTTP_CREATED, $response->getStatusCode());
         }
@@ -173,8 +178,9 @@ class UserControllerTest extends WebTestCase
         $request = $this->client->request("GET", '/user/all');
         $response = $this->client->getResponse();
         //$responseUsers = json_decode($response->getContent(), true);
+        $content = json_decode($response->getContent(), true);
 
-        var_dump($response->getContent());
+        $this->assertEquals($users, $content);
     }
 
 

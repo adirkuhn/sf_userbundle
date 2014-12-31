@@ -29,6 +29,12 @@
 # PHPUnit
 /app/phpunit.xml
 /phpunit.xml
+Tests/app/cache/*
+Tests/app/logs/*
 
 # Composer PHAR
 /composer.phar
+composer.lock
+vendor/*
+
+.idea

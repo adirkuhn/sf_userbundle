@@ -1,0 +1,52 @@
+framework:
+    secret:          secret
+    test: ~
+    router:          { resource: "%kernel.root_dir%/routing.yml" }
+    form:            true
+    csrf_protection: true
+    validation:      { enable_annotations: true }
+    templating:      { engines: ['twig'] }
+    session:
+        # handler_id set to null will use default session handler from php.ini
+        handler_id:  ~
+
+monolog:
+    handlers:
+        main:
+            type:         fingers_crossed
+            action_level: error
+            handler:      nested
+        nested:
+            type:  stream
+            path:  %kernel.logs_dir%/%kernel.environment%.log
+            level: debug
+
+doctrine:
+    dbal:
+        driver: pdo_sqlite
+        path: %kernel.cache_dir%/patobeta3test.db
+        charset: UTF8
+
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        auto_mapping: true
+
+
+security:
+    encoders:
+        AdirKuhn\UserBundle\Entity\User:
+            algorithm: sha512
+            iterations: 1
+            encode_as_base64: true
+
+    providers:
+        in_memory:
+            memory: ~
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        default:
+            anonymous: ~
